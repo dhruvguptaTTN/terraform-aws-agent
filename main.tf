@@ -28,8 +28,13 @@ resource "aws_iam_role" "terraform_agent_role" {
     ]
   }
   POLICY
-  tags = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-role" }))
+  tags               = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-role" }))
 
+}
+
+resource "aws_iam_instance_profile" "terraform_agent_profile" {
+  name = "${var.project_name_prefix}-terraform-agent-instance-profile"
+  role = aws_iam_role.terraform_agent_role.name
 }
 
 data "aws_iam_policy" "terraform_agent_ssm_mananged_instance_core" {
@@ -41,6 +46,8 @@ resource "aws_iam_role_policy_attachment" "_ssm_mananged_instance_core" {
   role       = aws_iam_role.terraform_agent_role.id
 }
 
+
+
 data "template_file" "user_data" {
   template = file("${path.module}/user_data.sh")
 }
@@ -50,12 +57,11 @@ resource "aws_instance" "ec2" {
   subnet_id               = var.subnet_id
   vpc_security_group_ids  = var.security_groups
   key_name                = var.key_name
-  iam_instance_profile    = var.iam_instance_profile
+  iam_instance_profile    = aws_iam_instance_profile.terraform_agent_profile.name
   ebs_optimized           = var.ebs_optimized
   disable_api_termination = var.disable_api_termination
-  #disable_api_stop        = var.disable_api_stop
-  user_data_base64  = base64encode(data.template_file.user_data.rendered)
-  source_dest_check = var.source_dest_check
+  user_data_base64        = base64encode(data.template_file.user_data.rendered)
+  source_dest_check       = var.source_dest_check
 
   volume_tags = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent" }))
   tags        = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent" }))

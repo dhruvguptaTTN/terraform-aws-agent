@@ -15,10 +15,10 @@ variable "project_name_prefix" {
   default     = "dev-tothenew"
 }
 
-variable "iam_instance_profile" {
-  description = "IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile"
-  type        = string
-}
+# variable "iam_instance_profile" {
+#   description = "IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile"
+#   type        = string
+# }
 
 variable "key_name" {
   description = "Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource"
