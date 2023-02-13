@@ -16,7 +16,7 @@ resource "aws_security_group" "terraform_agent_sg" {
   vpc_id      = var.vpc_id
   tags        = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-sg" }))
   description = "Terraform Agent security group"
-  
+
   egress {
     description = "Allow traffic to internet for Package installation"
     from_port   = 443
@@ -45,7 +45,7 @@ resource "aws_iam_role" "terraform_agent_role" {
 resource "aws_iam_instance_profile" "terraform_agent_profile" {
   name = "${var.project_name_prefix}-terraform-agent-instance-profile"
   role = aws_iam_role.terraform_agent_role.name
-  tags  = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-profile" }))
+  tags = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-profile" }))
 
 }
 
