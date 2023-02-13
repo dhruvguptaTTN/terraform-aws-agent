@@ -11,23 +11,19 @@ data "aws_ami" "amazon-linux-2" {
   owners = ["amazon"]
 }
 
+data "aws_iam_policy_document" "instance-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_iam_role" "terraform_agent_role" {
   name               = "${var.project_name_prefix}-terraform-agent-role"
-  assume_role_policy = <<POLICY
-  {
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Action" : "sts:AssumeRole",
-        "Effect" : "Allow",
-        "Principal" : {
-          "Service" : "ec2.amazonaws.com"
-        },
-        "Sid" : ""
-      }
-    ]
-  }
-  POLICY
+  assume_role_policy = data.aws_iam_policy_document.instance-assume-role-policy.json
   tags               = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-role" }))
 
 }
@@ -35,6 +31,8 @@ resource "aws_iam_role" "terraform_agent_role" {
 resource "aws_iam_instance_profile" "terraform_agent_profile" {
   name = "${var.project_name_prefix}-terraform-agent-instance-profile"
   role = aws_iam_role.terraform_agent_role.name
+  tags  = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-profile" }))
+
 }
 
 data "aws_iam_policy" "terraform_agent_ssm_mananged_instance_core" {
@@ -51,6 +49,8 @@ resource "aws_iam_role_policy_attachment" "_ssm_mananged_instance_core" {
 data "template_file" "user_data" {
   template = file("${path.module}/user_data.sh")
 }
+
+
 resource "aws_instance" "ec2" {
   ami                     = data.aws_ami.amazon-linux-2.id
   instance_type           = var.instance_type

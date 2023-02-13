@@ -1,12 +1,7 @@
 
 module "ec2-terraform-agent" {
-  source              = "git::https://github.com/tothenew/terraform-aws-agent.git"
+  source              = "../"
   key_name            = "tothenew"
-  security_groups     = ["sg-999999999999"]
-  subnet_id           = "ssubnet-999999999999"
-  project_name_prefix = "dev-tothenew"
-  common_tags = {
-    "Project"     = "ToTheNew",
-    "Environment" = "dev"
-  }
+  security_groups     = ["sg-02e6ebd983b19c810"]
+  subnet_id           = "subnet-006ddef68deceb474"
 }
