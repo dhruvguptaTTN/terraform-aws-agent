@@ -6,12 +6,19 @@
 This is a terraform ec2 to use for baseline. The default actions will provide updates for section between Requirements and Outputs.
 
 The following content needed to be created and managed:
- - Introduction
-     - Explaination of module 
-     - Intended users
- - Resource created and managed by this module
- - Example Usages
+ - EC2 Instance
+ - Security Group
+ - IAM Role
 
+## Usages
+```
+module "ec2-terraform-agent" {
+  source              = "git::https://github.com/tothenew/terraform-aws-agent.git"
+  vpc_id              = "vpc-999999999999"
+  subnet_id           = "subnet-999999999999"
+}
+
+```
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -31,7 +38,7 @@ The following content needed to be created and managed:
 
 ## Modules
 
-No modules.
+| <a name="terraform_ec2_agent"></a> [vpc\_terraform_ec2_agent](#module\_ec2\_terraform_ec2_agent) | ./modules/vpc | n/a |
 
 ## Resources
 
