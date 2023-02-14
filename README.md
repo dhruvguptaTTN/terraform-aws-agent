@@ -38,7 +38,7 @@ module "terraform_ec2_agent" {
 
 ## Modules
 
-| <a name="terraform_ec2_agent"></a> [vpc\_terraform_ec2_agent](#module\_ec2\_terraform_ec2_agent) | ./modules/vpc | n/a |
+| <a name="terraform_ec2_agent"></a> [ec2\_terraform_ec2_agent](#module\_ec2\_terraform_ec2_agent) | ./modules/terraform_ec2_agent | n/a |
 
 ## Resources
 
