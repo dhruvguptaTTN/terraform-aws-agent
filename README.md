@@ -3,41 +3,81 @@
 [![Lint Status](https://github.com/tothenew/terraform-aws-template/workflows/Lint/badge.svg)](https://github.com/tothenew/terraform-aws-template/actions)
 [![LICENSE](https://img.shields.io/github/license/tothenew/terraform-aws-template)](https://github.com/tothenew/terraform-aws-template/blob/master/LICENSE)
 
-This is a template to use for baseline. The default actions will provide updates for section bitween Requirements and Outputs.
+This is a terraform ec2 to use for baseline. The default actions will provide updates for section between Requirements and Outputs.
 
 The following content needed to be created and managed:
- - Introduction
-     - Explaination of module 
-     - Intended users
- - Resource created and managed by this module
- - Example Usages
+ - EC2 Instance
+ - Security Group
+ - IAM Role
 
+## Usages
+```
+module "terraform_ec2_agent" {
+  source              = "git::https://github.com/tothenew/terraform-aws-agent.git"
+  vpc_id              = "vpc-999999999999"
+  subnet_id           = "subnet-999999999999"
+}
+
+```
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.72 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 3.0 |
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.72 |
+| <a name="provider_template"></a> [template](#provider\_template) | n/a |
+
 
 ## Modules
 
-No modules.
+| <a name="terraform_ec2_agent"></a> [vpc\_terraform_ec2_agent](#module\_ec2\_terraform_ec2_agent) | ./modules/vpc | n/a |
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [aws_instance.ec2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
+| [aws_ami.amazon-linux-2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [template_file.user_data](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | A mapping of tags to assign to the resource | `map(string)` | n/a | no |
+| <a name="input_delete_on_termination"></a> [delete\_on\_termination](#input\_delete\_on\_termination) | Whether EBS volume will be deleted when instance gets deleted. | `bool` | `true` | no |
+| <a name="input_disable_api_stop"></a> [disable\_api\_stop](#input\_disable\_api\_stop) | If true, enables EC2 Instance Stop Protection. | `bool` | `false` | no |
+| <a name="input_disable_api_termination"></a> [disable\_api\_termination](#input\_disable\_api\_termination) | If true, enables EC2 Instance Termination Protection | `bool` | `true` | no |
+| <a name="input_ebs_optimized"></a> [ebs\_optimized](#input\_ebs\_optimized) | If true, the launched EC2 instance will be EBS-optimized | `bool` | `true` | no |
+| <a name="input_encrypted"></a> [encrypted](#input\_encrypted) | Whether EBS volume will be encrypted. | `bool` | `true` | no |
+| <a name="input_iam_instance_profile"></a> [iam\_instance\_profile](#input\_iam\_instance\_profile) | IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile | `string` | n/a | no |
+| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The type of instance to start | `string` | `"t3a.medium"` | no |
+| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource | `string` | n/a | no |
+| <a name="input_project_name_prefix"></a> [project\_name\_prefix](#input\_project\_name\_prefix) | A string value to describe prefix of all the resources | `string` | `"dev"` | no |
+| <a name="input_root_volume_size"></a> [root\_volume\_size](#input\_root\_volume\_size) | Root volume size of the EC2 instance | `number` | `100` | no |
+| <a name="input_security_groups"></a> [security\_groups](#input\_security\_groups) | A string value for Security Group ID | `list(string)` | n/a | no |
+| <a name="input_source_dest_check"></a> [source\_dest\_check](#input\_source\_dest\_check) | Source destination Check. Used for NAT or VPNs. | `bool` | `true` | no |
+| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The VPC Subnet IDs to launch in | `string` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The VPC ID to launch | `string` | n/a | yes |
+
+| <a name="input_volume_type"></a> [volume\_type](#input\_volume\_type) | Volume type for EC2 instance default latest type | `string` | `"gp3"` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_arn"></a> [arn](#output\_arn) | n/a |
+| <a name="output_id"></a> [id](#output\_id) | n/a |
+| <a name="output_private_ip"></a> [private\_ip](#output\_private\_ip) | n/a |
+| <a name="output_public_ip"></a> [public\_ip](#output\_public\_ip) | n/a |
 <!-- END_TF_DOCS -->
 
 ## Authors

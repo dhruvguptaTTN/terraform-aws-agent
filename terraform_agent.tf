@@ -11,6 +11,20 @@ data "aws_ami" "amazon-linux-2" {
   owners = ["amazon"]
 }
 
+resource "aws_security_group" "terraform_agent_sg" {
+  name        = "${var.project_name_prefix}-terraform-agent-sg"
+  vpc_id      = var.vpc_id
+  tags        = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-sg" }))
+  description = "Terraform Agent security group"
+
+  egress {
+    description = "Allow traffic to internet for Package installation"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 data "aws_iam_policy_document" "instance-assume-role-policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -31,7 +45,7 @@ resource "aws_iam_role" "terraform_agent_role" {
 resource "aws_iam_instance_profile" "terraform_agent_profile" {
   name = "${var.project_name_prefix}-terraform-agent-instance-profile"
   role = aws_iam_role.terraform_agent_role.name
-  tags  = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-profile" }))
+  tags = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-profile" }))
 
 }
 
@@ -55,8 +69,7 @@ resource "aws_instance" "ec2" {
   ami                     = data.aws_ami.amazon-linux-2.id
   instance_type           = var.instance_type
   subnet_id               = var.subnet_id
-  vpc_security_group_ids  = var.security_groups
-  key_name                = var.key_name
+  vpc_security_group_ids  = [aws_security_group.terraform_agent_sg.id]
   iam_instance_profile    = aws_iam_instance_profile.terraform_agent_profile.name
   ebs_optimized           = var.ebs_optimized
   disable_api_termination = var.disable_api_termination

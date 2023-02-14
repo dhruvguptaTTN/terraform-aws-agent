@@ -1,3 +1,8 @@
+variable "vpc_id" {
+  description = "The VPC Subnet IDs to launch in"
+  type        = string
+}
+
 variable "subnet_id" {
   description = "The VPC Subnet IDs to launch in"
   type        = string
@@ -15,16 +20,6 @@ variable "project_name_prefix" {
   default     = "dev"
 }
 
-# variable "iam_instance_profile" {
-#   description = "IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile"
-#   type        = string
-# }
-
-variable "key_name" {
-  description = "Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource"
-  type        = string
-}
-
 variable "disable_api_termination" {
   description = "If true, enables EC2 Instance Termination Protection"
   type        = bool
@@ -37,16 +32,11 @@ variable "ebs_optimized" {
   default     = true
 }
 
-variable "security_groups" {
-  description = "A string value for Security Group ID"
-  type        = list(string)
-}
-
 variable "common_tags" {
   description = "A mapping of tags to assign to the resource"
   type        = map(string)
   default = {
-    "Created By" = "Terraform"
+    "Created By" = "terraform"
   }
 }
 
