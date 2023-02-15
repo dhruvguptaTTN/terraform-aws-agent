@@ -36,6 +36,7 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
 }
 
 resource "aws_iam_role" "terraform_agent_role" {
+  count              = var.iam_instance_profile == "" ? 1 : 0
   name               = "${var.project_name_prefix}-terraform-agent-role"
   assume_role_policy = data.aws_iam_policy_document.instance-assume-role-policy.json
   tags               = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-role" }))
@@ -43,8 +44,9 @@ resource "aws_iam_role" "terraform_agent_role" {
 }
 
 resource "aws_iam_instance_profile" "terraform_agent_profile" {
+  count = var.iam_instance_profile == "" ? 1 : 0
   name = "${var.project_name_prefix}-terraform-agent-instance-profile"
-  role = aws_iam_role.terraform_agent_role.name
+  role = aws_iam_role.terraform_agent_role[0].name
   tags = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-profile" }))
 
 }
@@ -54,8 +56,9 @@ data "aws_iam_policy" "terraform_agent_ssm_mananged_instance_core" {
 }
 
 resource "aws_iam_role_policy_attachment" "_ssm_mananged_instance_core" {
+  count      = var.iam_instance_profile == "" ? 1 : 0
   policy_arn = data.aws_iam_policy.terraform_agent_ssm_mananged_instance_core.arn
-  role       = aws_iam_role.terraform_agent_role.id
+  role       = aws_iam_role.terraform_agent_role[0].id
 }
 
 
@@ -70,7 +73,7 @@ resource "aws_instance" "ec2" {
   instance_type           = var.instance_type
   subnet_id               = var.subnet_id
   vpc_security_group_ids  = [aws_security_group.terraform_agent_sg.id]
-  iam_instance_profile    = aws_iam_instance_profile.terraform_agent_profile.name
+  iam_instance_profile    = var.iam_instance_profile == "" ? aws_iam_instance_profile.terraform_agent_profile[0].name : var.iam_instance_profile
   ebs_optimized           = var.ebs_optimized
   disable_api_termination = var.disable_api_termination
   user_data_base64        = base64encode(data.template_file.user_data.rendered)
