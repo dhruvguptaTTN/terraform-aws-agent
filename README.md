@@ -1,4 +1,4 @@
-# terraform-aws-template
+# terraform-aws-agent
 
 [![Lint Status](https://github.com/tothenew/terraform-aws-agent/workflows/Lint/badge.svg)](https://github.com/tothenew/terraform-aws-agent/actions)
 [![LICENSE](https://img.shields.io/github/license/tothenew/terraform-aws-agent)](https://github.com/tothenew/terraform-aws-agent/blob/master/LICENSE)
