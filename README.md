@@ -3,7 +3,7 @@
 [![Lint Status](https://github.com/tothenew/terraform-aws-template/workflows/Lint/badge.svg)](https://github.com/tothenew/terraform-aws-template/actions)
 [![LICENSE](https://img.shields.io/github/license/tothenew/terraform-aws-template)](https://github.com/tothenew/terraform-aws-template/blob/master/LICENSE)
 
-This is a terraform ec2 to use for baseline. The default actions will provide updates for section between Requirements and Outputs.
+This module creates an EC2 instance with Docker,IAM Policy and make installed in it.
 
 The following content needed to be created and managed:
  - EC2 Instance
@@ -16,6 +16,8 @@ module "terraform_ec2_agent" {
   source              = "git::https://github.com/tothenew/terraform-aws-agent.git"
   vpc_id              = "vpc-999999999999"
   subnet_id           = "subnet-999999999999"
+  iam_instance_profile = ""
+
 }
 
 ```
