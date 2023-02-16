@@ -45,9 +45,9 @@ resource "aws_iam_role" "terraform_agent_role" {
 
 resource "aws_iam_instance_profile" "terraform_agent_profile" {
   count = var.iam_instance_profile == "" ? 1 : 0
-  name = "${var.project_name_prefix}-terraform-agent-instance-profile"
-  role = aws_iam_role.terraform_agent_role[0].name
-  tags = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-profile" }))
+  name  = "${var.project_name_prefix}-terraform-agent-instance-profile"
+  role  = aws_iam_role.terraform_agent_role[0].name
+  tags  = merge(var.common_tags, tomap({ "Name" : "${var.project_name_prefix}-terraform-agent-profile" }))
 
 }
 
