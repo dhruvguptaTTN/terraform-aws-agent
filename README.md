@@ -1,7 +1,7 @@
 # terraform-aws-template
 
-[![Lint Status](https://github.com/tothenew/terraform-aws-template/workflows/Lint/badge.svg)](https://github.com/tothenew/terraform-aws-template/actions)
-[![LICENSE](https://img.shields.io/github/license/tothenew/terraform-aws-template)](https://github.com/tothenew/terraform-aws-template/blob/master/LICENSE)
+[![Lint Status](https://github.com/tothenew/terraform-aws-agent/workflows/Lint/badge.svg)](https://github.com/tothenew/terraform-aws-agent/actions)
+[![LICENSE](https://img.shields.io/github/license/tothenew/terraform-aws-agent)](https://github.com/tothenew/terraform-aws-agent/blob/master/LICENSE)
 
 This module creates an EC2 instance with Docker,IAM Policy and make installed in it.
 
