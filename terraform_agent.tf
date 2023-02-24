@@ -19,9 +19,9 @@ resource "aws_security_group" "terraform_agent_sg" {
 
   egress {
     description = "Allow traffic to internet for Package installation"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
